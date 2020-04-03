@@ -157,7 +157,7 @@ void ItemData::Take(RE::Actor* a_to, RE::TESObjectREFR* a_from, SInt32 a_count)
 		return;
 	}
 
-	_object->OnRemovedFrom(a_from);	// remove projectile 3D
+	_object->HandleRemoveItemFromContainer(a_from);	// remove projectile 3D
 
 	switch (a_from->GetFormType()) {
 	case RE::FormType::ActorCharacter:
@@ -219,7 +219,7 @@ void ItemData::AddItem(RE::Actor* a_to, RE::TESObjectREFR* a_from, SInt32 a_coun
 	}
 
 	for (auto& item : itemsToTake) {
-		a_to->AddItem(_object, item.second, item.first, a_from);
+		a_to->AddObjectToContainer(_object, item.second, item.first, a_from);
 	}
 }
 

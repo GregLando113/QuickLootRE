@@ -9,7 +9,6 @@
 #include <typeinfo>
 #include <vector>
 
-#include "CrosshairHook.h"
 #include "LootMenu.h"
 #include "SetActivateLabelPerkEntryVisitor.h"
 #include "SetQuickLootVariable.h"
@@ -19,6 +18,8 @@
 
 #include "RE/Skyrim.h"
 #include "REL/Relocation.h"
+
+#include "..\skse64\skse64\GameObjects.h"
 
 
 namespace
@@ -139,7 +140,7 @@ namespace
 		void operator()()
 		{
 			auto player = RE::PlayerCharacter::GetSingleton();
-			player->StartActivation();
+			player->StartGrabObject();
 		}
 	};
 
@@ -156,19 +157,19 @@ namespace
 	struct MenuOpenHandlerEx : RE::MenuOpenHandler
 	{
 	public:
-		using func_t = function_type_t<decltype(&RE::MenuOpenHandler::ProcessButton)>;
-		inline static func_t* func = 0;
+		typedef bool (RE::MenuOpenHandler::* func_t)(RE::ButtonEvent*);
+		inline static func_t func = 0;
 
 
 		bool Hook_ProcessButton(RE::ButtonEvent* a_event)
 		{
-			auto inputStrHolder = RE::InputStringHolder::GetSingleton();
+			auto inputStrHolder = InputStringHolder::GetSingleton();
 			auto input = RE::InputManager::GetSingleton();
 			auto mm = RE::MenuManager::GetSingleton();
 
 			auto& str = input->IsGamepadEnabled() ? inputStrHolder->journal : inputStrHolder->pause;
-			if (a_event->controlID != str || mm->GameIsPaused()) {
-				return func(this, a_event);
+			if (a_event->idCode != str || mm->GameIsPaused()) {
+				return (this->*func)(a_event);
 			}
 
 			static bool processed = true;
@@ -177,7 +178,7 @@ namespace
 			if (a_event->IsDown()) {
 				processed = false;
 			} else if (a_event->IsHeld()) {
-				if (!processed && a_event->timer >= 2.0) {
+				if (!processed && a_event->heldDownSecs >= 2.0) {
 					processed = true;
 					auto loot = LootMenu::GetSingleton();
 					loot->ToggleEnabled();
@@ -185,13 +186,13 @@ namespace
 				}
 			} else {
 				if (!processed) {
-					auto pressure = a_event->pressure;
-					auto timer = a_event->timer;
-					a_event->pressure = 1.0;
-					a_event->timer = 0.0;
-					result = func(this, a_event);
-					a_event->pressure = pressure;
-					a_event->timer = timer;
+					auto pressure = a_event->value;
+					auto timer = a_event->heldDownSecs;
+					a_event->value = 1.0;
+					a_event->heldDownSecs = 0.0;
+					result = (this->*func)(a_event);
+					a_event->value = pressure;
+					a_event->heldDownSecs = timer;
 					processed = true;
 				}
 			}
@@ -202,7 +203,7 @@ namespace
 
 		static void InstallHook()
 		{
-			REL::Offset<func_t**> vFunc(RE::Offset::MenuOpenHandler::Vtbl + (0x5 * 0x8));
+			REL::Offset<func_t*> vFunc(RE::Offset::MenuOpenHandler::Vtbl.GetOffset() + (0x5 * 0x8));
 			func = *vFunc;
 			SafeWrite64(vFunc.GetAddress(), unrestricted_cast<std::uintptr_t>(&Hook_ProcessButton));
 			_DMESSAGE("(%s) installed hook", typeid(MenuOpenHandlerEx).name());

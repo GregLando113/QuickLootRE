@@ -33,9 +33,6 @@
     <ClCompile Include="src\InventoryList.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hooks.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Settings.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
     <ClCompile Include="src\ItemWrapper.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Hooks.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Events.h">
@@ -78,9 +78,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\InventoryList.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Hooks.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Settings.h">
@@ -114,6 +111,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\ItemWrapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hooks.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

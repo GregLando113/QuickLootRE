@@ -37,7 +37,7 @@ const char* ItemWrapper::GetName() const
 	case kInventory:
 		{
 			auto inv = std::get<kInventory>(_impl);
-			return inv->GenerateName();
+			return inv->GetDisplayName();
 		}
 	case kWorld:
 		{

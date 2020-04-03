@@ -83,10 +83,10 @@ void SetupDelegate::Run()
 	auto loot = LootMenu::GetSingleton();
 	auto def = loot->view->GetMovieDef();
 
-	double x = Settings::positionX;
-	double y = Settings::positionY;
-	double scale = Settings::scale;
-	double opacity = Settings::opacity;
+	double x = *Settings::positionX;
+	double y = *Settings::positionY;
+	double scale = *Settings::scale;
+	double opacity = *Settings::opacity;
 
 	x = (0 <= x && x <= 100) ? (x * def->GetWidth() * 0.01) : -1;
 	y = (0 <= y && y <= 100) ? (y * def->GetHeight() * 0.01) : -1;
@@ -137,9 +137,9 @@ void SetContainerDelegate::Run()
 		takeText = locStrings.take.c_str();
 	}
 
-	auto searchText = Settings::disableActiTextHook ? locStrings.search.c_str() : loot->GetActiText();
+	auto searchText = *Settings::disableActiTextHook ? locStrings.search.c_str() : loot->GetActiText();
 
-	args[kTitle].SetString(ref->GetReferenceName());
+	args[kTitle].SetString(ref->GetName());
 	args[kTake].SetString(takeText);
 	args[kTakeAll].SetString(locStrings.takeAll.c_str());
 	args[kSearch].SetString(searchText);
@@ -156,7 +156,7 @@ void OpenContainerDelegate::Run()
 	auto loot = LootMenu::GetSingleton();
 	loot->view->CreateArray(&args[0]);
 	auto& invList = loot->GetInventoryList();
-	std::size_t size = (invList.size() < Settings::itemLimit) ? invList.size() : Settings::itemLimit;
+	std::size_t size = (invList.size() < *Settings::itemLimit) ? invList.size() : *Settings::itemLimit;
 
 	std::unique_ptr<RE::GFxValue[]> item(new RE::GFxValue[size]);
 	std::unique_ptr<RE::GFxValue[]> text(new RE::GFxValue[size]);
@@ -197,10 +197,10 @@ void OpenContainerDelegate::Run()
 	loot->SetDisplaySize(displaySize);
 	loot->ModSelectedIndex(0);
 
-	if (Settings::disableIfEmpty && displaySize <= 0) {
+	if (*Settings::disableIfEmpty && displaySize <= 0) {
 		loot->Close();
 	} else {
-		if (!Settings::disableOnActiDispatch) {
+		if (!*Settings::disableOnActiDispatch) {
 			auto sourceHolder = RE::ScriptEventSourceHolder::GetSingleton();
 			RE::TESObjectREFRPtr target(loot->GetContainerRef());
 			RE::TESObjectREFRPtr caster(RE::PlayerCharacter::GetSingleton());
@@ -231,7 +231,7 @@ void OpenContainerDelegate::DebugContents()
 			SKSE::Logger::Print("========== HIDDEN ITEMS ==========");
 			div = true;
 		}
-		item.DBGDumpType(i);
+		//item.DBGDumpType(i);
 		++i;
 	}
 

@@ -3,10 +3,8 @@
 
 #include <string>
 
-#include "CrosshairHook.h"
 #include "Events.h"
-#include "Hooks.h"
-#include "ItemData.h"
+#include "GfxItemData.h"
 #include "LootMenu.h"
 #include "Registration.h"
 #include "Settings.h"
@@ -150,7 +148,7 @@ namespace
 				LootMenu::GetSingleton();	// instantiate menu
 				_MESSAGE("LootMenu initialized");
 
-				ItemData::SetCompareOrder();
+				GfxItemData::SetCompareOrder();
 				_MESSAGE("Settings applied");
 
 				auto crosshairRefDispatcher = SKSE::GetCrosshairRefEventSource();

@@ -468,9 +468,9 @@ SInt32 GFxItemData::CalcPickPocketChance()
 		auto targetActor = static_cast<RE::Actor*>(_container);
 
 		auto totalValue = _itemImpl.GetValue() * GetCount();
-		auto isDetected = targetActor->GetDetectionLevel(player) > 0;
-		auto playerSkill = player->GetPlayerActorValueCurrent(RE::ActorValue::kPickpocket);
-		auto targetSkill = targetActor->GetActorValueCurrent(RE::ActorValue::kPickpocket);
+		auto isDetected = targetActor->RequestDetectionLevel(player) > 0;
+		auto playerSkill = player->GetActorValue(RE::ActorValue::kPickpocket); //GetPlayerActorValueCurrent(RE::ActorValue::kPickpocket);
+		auto targetSkill = targetActor->GetActorValue(RE::ActorValue::kPickpocket);
 
 		auto chance = RE::PlayerCharacter::GetPickpocketChance(playerSkill, targetSkill, totalValue, _weight, player, targetActor, isDetected, _itemImpl.GetObject());
 		if (chance > 100) {
@@ -1370,7 +1370,7 @@ auto GFxItemData::CalcTypePotion(RE::AlchemyItem* a_potion)
 {
 	using RE::ActorValue;
 
-	if (a_potion->IsFoodItem()) {
+	if (a_potion->IsFood()) {
 		auto sound = a_potion->data.consumptionSound;
 		if (sound && sound->formID == kITMPotionUse) {
 			switch (a_potion->formID) {

@@ -63,7 +63,7 @@ namespace Events
 	{
 		using EventType = RE::INPUT_EVENT_TYPE;
 		using DeviceType = RE::INPUT_DEVICE;
-		using Message = RE::UIMessage::Message;
+		using Message = RE::UI_MESSAGE_TYPE;
 
 		if (!a_event || !*a_event) {
 			return EventResult::kContinue;
@@ -82,17 +82,17 @@ namespace Events
 					auto msgQ = RE::UIMessageQueue::GetSingleton();
 
 					if (ui->GetMovieView(intfcStr->inventoryMenu)) {
-						msgQ->AddMessage(intfcStr->inventoryMenu, Message::kClose, 0);
+						msgQ->AddMessage(intfcStr->inventoryMenu, Message::kHide, 0);
 					} else if (ui->GetMovieView(intfcStr->statsMenu) && !ui->GetMovieView(intfcStr->levelUpMenu)) {
-						msgQ->AddMessage(intfcStr->statsMenu, Message::kClose, 0);
+						msgQ->AddMessage(intfcStr->statsMenu, Message::kHide, 0);
 					} else if (ui->GetMovieView(intfcStr->magicMenu)) {
-						msgQ->AddMessage(intfcStr->magicMenu, Message::kClose, 0);
+						msgQ->AddMessage(intfcStr->magicMenu, Message::kHide, 0);
 					} else if (ui->GetMovieView(intfcStr->mapMenu)) {
-						msgQ->AddMessage(intfcStr->mapMenu, Message::kClose, 0);
+						msgQ->AddMessage(intfcStr->mapMenu, Message::kHide, 0);
 					} else if (ui->GetMovieView(intfcStr->containerMenu)) {
-						msgQ->AddMessage(intfcStr->containerMenu, Message::kClose, 0);
+						msgQ->AddMessage(intfcStr->containerMenu, Message::kHide, 0);
 					} else if (ui->GetMovieView(intfcStr->journalMenu)) {
-						msgQ->AddMessage(intfcStr->journalMenu, Message::kClose, 0);
+						msgQ->AddMessage(intfcStr->journalMenu, Message::kHide, 0);
 					}
 				}
 			}
@@ -157,7 +157,7 @@ namespace Events
 
 		auto player = RE::PlayerCharacter::GetSingleton();
 		if ((a_event->actor && a_event->actor->IsPlayerRef()) || (a_event->targetActor && a_event->targetActor->IsPlayerRef())) {
-			if (Settings::disableInCombat || IsValidPickPocketTarget(loot->GetContainerRef(), player->IsSneaking())) {
+			if (*Settings::disableInCombat || IsValidPickPocketTarget(loot->GetContainerRef(), player->IsSneaking())) {
 				loot->Close();
 				loot->SkipNextInput();
 			}

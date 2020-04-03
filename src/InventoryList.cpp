@@ -22,7 +22,7 @@ void InventoryList::parse(RE::TESObjectREFR* a_ref)
 	for (auto& item : inv) {
 		auto count = item.second.first;
 		if (count > 0) {
-			auto entry = ItemData(item.second.second, item.second.first);
+			auto entry = ItemData(item.second.second.get(), item.second.first);
 			_itemList.emplace_back(std::move(entry), item.second.first);
 		}
 	}
@@ -31,7 +31,7 @@ void InventoryList::parse(RE::TESObjectREFR* a_ref)
 	for (auto& item : droppedInv) {
 		auto count = item.second.first;
 		if (count > 0) {
-			auto entry = ItemData(std::move(item.second.second), item.second.first);
+			auto entry = ItemData(std::move(item.second.second.at(0)), item.second.first);
 			_itemList.emplace_back(std::move(entry), item.second.first);
 		}
 	}
