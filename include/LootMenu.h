@@ -32,7 +32,6 @@ class LootMenu :
 public:
 	using MenuBase = RE::IMenu;
 	using HandlerBase = RE::MenuEventHandler;
-	using Result = MenuBase::Result;
 	using GRefCountBaseStatImpl::operator new;
 	using GRefCountBaseStatImpl::operator delete;
 
@@ -48,7 +47,7 @@ public:
 
 
 	// IMenu
-	virtual Result ProcessMessage(RE::UIMessage* a_message) override;
+	virtual RE::UI_MESSAGE_RESULTS ProcessMessage(RE::UIMessage& a_message) override;
 	virtual void PostDisplay() override;
 
 	// MenuEventHandler

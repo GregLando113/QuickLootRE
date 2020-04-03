@@ -196,14 +196,14 @@ extern "C" {
 			return false;
 		}
 
-		switch (a_skse->RuntimeVersion()) {
-		case RUNTIME_VERSION_1_5_73:
-		case RUNTIME_VERSION_1_5_80:
-			break;
-		default:
-			_FATALERROR("Unsupported runtime version %08X!\n", a_skse->RuntimeVersion());
-			return false;
-		}
+		//switch (a_skse->RuntimeVersion()) {
+		//case RUNTIME_VERSION_1_5_73:
+		//case RUNTIME_VERSION_1_5_80:
+		//	break;
+		//default:
+		//	_FATALERROR("Unsupported runtime version %08X!\n", a_skse->RuntimeVersion());
+		//	return false;
+		//}
 
 		return true;
 	}

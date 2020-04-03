@@ -225,7 +225,7 @@ void GFxItemData::SetCompareOrder()
 {
 	_compares.clear();
 	CompareMap compMap;
-	for (auto& comp : Settings::sortOrder) {
+	for (auto& comp : *Settings::sortOrder) {
 		auto it = compMap.find(comp);
 		if (it != compMap.end()) {
 			_DMESSAGE("Added compare by %s", comp.c_str());
@@ -427,7 +427,7 @@ bool GFxItemData::CalcCanPickPocket()
 	}
 
 	auto actor = static_cast<RE::Actor*>(_container);
-	if (actor->IsDead()) {
+	if (actor->IsDead(true)) {
 		return true;
 	}
 

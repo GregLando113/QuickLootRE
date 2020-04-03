@@ -10,6 +10,7 @@
 ItemData::ItemData(RE::InventoryEntryData* a_entryData, SInt32 a_count) :
 	_gfxItem(std::move(ItemWrapper(a_entryData)), a_count),
 	_extraLists(a_entryData->extraLists),
+	_entryData(a_entryData),
 	_worldRef(),
 	_object(a_entryData->object),
 	_count(a_count)
@@ -22,6 +23,7 @@ ItemData::ItemData(RE::InventoryEntryData* a_entryData, SInt32 a_count) :
 ItemData::ItemData(const RE::NiPointer<RE::TESObjectREFR>& a_objectRef, SInt32 a_count) :
 	_gfxItem(std::move(ItemWrapper(a_objectRef)), a_count),
 	_extraLists(0),
+	_entryData(0),
 	_worldRef(a_objectRef),
 	_object(a_objectRef->GetBaseObject()),
 	_count(a_count)
@@ -34,6 +36,7 @@ ItemData::ItemData(const RE::NiPointer<RE::TESObjectREFR>& a_objectRef, SInt32 a
 ItemData::ItemData(RE::NiPointer<RE::TESObjectREFR>&& a_objectRef, SInt32 a_count) :
 	_gfxItem(std::move(ItemWrapper(a_objectRef)), a_count),
 	_extraLists(0),
+	_entryData(0),
 	_worldRef(std::move(a_objectRef)),
 	_object(a_objectRef->GetBaseObject()),
 	_count(a_count)

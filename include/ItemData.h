@@ -42,6 +42,10 @@ public:
 	void Take(RE::Actor* a_to, RE::TESObjectREFR* a_from, SInt32 a_count = 1);
 	void TakeAll(RE::Actor* a_to, RE::TESObjectREFR* a_from);
 
+
+	RE::BSSimpleList<RE::ExtraDataList*>* GetExtraLists() { return _extraLists; }
+	RE::InventoryEntryData* GetEntryData() { return _entryData; }
+	RE::TESBoundObject* GetForm() { return _object; }
 private:
 	void AddItem(RE::Actor* a_to, RE::TESObjectREFR* a_from, SInt32 a_count);
 	void PickupObject(RE::Actor* a_to, RE::TESObjectREFR* a_from, SInt32 a_count);
@@ -51,5 +55,6 @@ private:
 	RE::BSSimpleList<RE::ExtraDataList*>* _extraLists;
 	RE::NiPointer<RE::TESObjectREFR> _worldRef;
 	RE::TESBoundObject* _object;
+	RE::InventoryEntryData* _entryData;
 	SInt32 _count;
 };
